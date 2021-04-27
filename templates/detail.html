@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Hero - Free Bulma template</title>
+    <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bulma Version 0.9.0-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+</head>
+
+<body>
+    <section class="hero is-info is-small is-bold">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../">
+                            <img src="http://bulma.io/images/bulma-type-white.png" alt="Logo">
+                        </a>
+                        <span class="navbar-burger burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            <div class="tabs is-right">
+                                <ul>
+                                    {% if current_user.is_authenticated %}
+                                    <li>Hi, {{ current_user.username }}</li>
+                                    {% endif %}
+                                    <li class="is-active"><a>Home</a></li>
+                                    {% if current_user.is_authenticated %}
+                                    <li><a href="">MyStock</a></li>
+                                    {% endif %}
+                                </ul>
+                                {% if current_user.is_authenticated %}
+                                <span class="navbar-item">
+                                    <a class="button is-white is-outlined" href="#">
+                                        <span title="Hello from the other side">Login</span>
+                                    </a>
+                                </span>
+                                {% else %}
+                                <span class="navbar-item">
+                                    <a class="button is-white is-outlined" href="/logout">
+                                        <span title="Hello from the other side">Logout</span>
+                                    </a>
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Online stock
+                </h1>
+                <h2 class="subtitle">
+                    An online stock system
+                </h2>
+            </div>
+        </div>
+    </section>
+    <div class="box cta">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-three-fifths">
+                    <div class="columns is-multiline">
+                        <div class="column is-half">
+                            <div class="card is-shady">
+                                <div class="card-header">
+                                    <div class="card-header-title">Daily</div>
+                                </div>
+                                <div class="card-image">
+                                    <img src="http://image.sinajs.cn/newchart/min/n/{{ stock }}.gif">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="card is-shady">
+                                <div class="card-header">
+                                    <div class="card-header-title">Weekly</div>
+                                </div>
+                                <div class="card-image">
+                                    <img src="http://image.sinajs.cn/newchart/daily/n/{{ stock }}.gif">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="card is-shady">
+                                <div class="card-header">
+                                    <div class="card-header-title">Monthly</div>
+                                </div>
+                                <div class="card-image">
+                                    <img src="http://image.sinajs.cn/newchart/weekly/n/{{ stock }}.gif">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="card is-shady">
+                                <div class="card-header">
+                                    <div class="card-header-title">Yearly</div>
+                                </div>
+                                <div class="card-image">
+                                    <img src="http://image.sinajs.cn/newchart/monthly/n/{{ stock }}.gif">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-two-fifths">
+                    <div class="title">Stock Information</div>
+                    <table class="table is-fullwidth is-hoverable is-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Stock Name</th>
+                                <td id="1"></td>
+                            </tr>
+                            <tr>
+                                <th>Today's Opening Price</th>
+                                <td id="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Yesterday's Closing Price</th>
+                                <td id="3"></td>
+                            </tr>
+                            <tr>
+                                <th>Current Price</th>
+                                <td id="4"></td>
+                            </tr>
+                            <tr>
+                                <th>Today's Highest Price</th>
+                                <td id="5"></td>
+                            </tr>
+                            <tr>
+                                <th>Today's Lowest Price</th>
+                                <td id="6"></td>
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td id="7"></td>
+                            </tr>
+                            <tr>
+                                <th>Time</th>
+                                <td id="8"></td>
+                            </tr>
+                    </table>
+                    <div class="container has-text-centered">
+                        <button class="button is-danger is-light">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>
+                    <a class="icon" href="https://github.com/BulmaTemplates/bulma-templates">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </p>
+                <div class="control level-item">
+                    <a href="https://github.com/BulmaTemplates/bulma-templates">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">Bulma Templates</span>
+                            <span class="tag is-info">MIT license</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script type="text/javascript" src="http://hq.sinajs.cn/list={{ stock }}" charset="gb2312"></script>
+<script type="text/javascript">
+    var elements = hq_str_{{ stock }}.split(",");
+    $("#1").text(elements[0])
+    $("#2").text(elements[1]) 
+    $("#3").text(elements[2]) 
+    $("#4").text(elements[3])
+    $("#5").text(elements[4]) 
+    $("#6").text(elements[5]) 
+    $("#7").text(elements[30]) 
+    $("#8").text(elements[31]) 
+</script>
+
+</html>

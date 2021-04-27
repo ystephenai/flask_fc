@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bulma Version 0.9.0-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+</head>
+
+<body>
+    <section class="hero is-info is-small is-bold">
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../">
+                            <img src="http://bulma.io/images/bulma-type-white.png" alt="Logo">
+                        </a>
+                        <span class="navbar-burger burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div id="navbarMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            <div class="tabs is-right">
+
+
+                                <ul>
+                                    {% if current_user.is_authenticated %}
+                                    <li>Hi, {{ current_user.username }}</li>
+                                    {% endif %}
+                                    <li class="is-active"><a>Home</a></li>
+                                    {% if current_user.is_authenticated %}
+                                    <li><a href="">MyStock</a></li>
+                                    {% endif %}
+                                </ul>
+                                {% if not current_user.is_authenticated %}
+                                <span class="navbar-item">
+                                    <a class="button is-white is-outlined" href="/login">
+                                        <span title="Hello from the other side">Login</span>
+                                    </a>
+                                </span>
+                                {% else %}
+                                <span class="navbar-item">
+                                    <a class="button is-white is-outlined" href="/logout">
+                                        <span title="Hello from the other side">Logout</span>
+                                    </a>
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Online stock
+                </h1>
+                <h2 class="subtitle">
+                    An online stock system
+                </h2>
+            </div>
+        </div>
+    </section>
+    <div class="box cta">
+        <div style="width:50%; margin:auto">
+            <form id="search" action="/detail" method="get">
+            <div class="field has-addons">
+                <div class=" control is-expanded">
+                    <input class="input" type="text" placeholder="Find a stock" name="stock">
+                </div>
+                <div class="control">
+                    <button class="button is-info">
+                        Search
+                    </button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <section class="container">
+        <div class="columns features">
+            <div class="column is-4">
+                <div class="card is-shady">
+                    <div class="card-header">
+                        <div class="card-header-title">上证指数</div>
+                    </div>
+                    <div class="card-image">
+                        <img src="http://image.sinajs.cn/newchart/min/n/sh000001.gif">
+                    </div>
+                </div>
+            </div>
+            <div class="column is-4">
+                <div class="card is-shady">
+                    <div class="card-header">
+                        <div class="card-header-title">深圳成指</div>
+                    </div>
+                    <div class="card-image">
+                        <img src="http://image.sinajs.cn/newchart/min/n/sz399001.gif">
+                    </div>
+                </div>
+            </div>
+            <div class="column is-4">
+                <div class="card is-shady">
+                    <div class="card-header">
+                        <div class="card-header-title">创业版指</div>
+                    </div>
+                    <div class="card-image">
+                        <img src="http://image.sinajs.cn/newchart/min/n/sz399006.gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="title has-text-centered">
+
+            Market News
+        </div>
+        <div id="marketnewsgeneral" class="columns is-multiline is-vcentered">
+
+
+        </div>
+
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>
+                    <a class="icon" href="https://github.com/BulmaTemplates/bulma-templates">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </p>
+                <div class="control level-item">
+                    <a href="https://github.com/BulmaTemplates/bulma-templates">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">Bulma Templates</span>
+                            <span class="tag is-info">MIT license</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+    let wSocket;
+
+    async function marketNews(type) {
+        const response = await fetch("https://finnhub.io/api/v1/news?category=" + type + "&token=c0pu1j748v6s0mp5irsg")
+        return response.json();
+    }
+
+    (async function () {
+        let general = document.getElementById('marketnewsgeneral');
+        general.innerHTML = '';
+        let generaldata = await marketNews('general');
+        generaldata = generaldata.slice(0,20)
+        generaldata.forEach(function (news) {
+            general.innerHTML += `
+            <div class="column is-one-third">
+<div class="card mb-3">
+<div class="card-image">
+    <figure class="image is-3by2">
+    <img src="${news.image}" alt="${news.headline}">
+    </figure>
+</div>
+<div class="card-content">
+    <div class="media">
+        <div class="media-content">
+            <p class="title is-4">${news.headline}</p>
+            <p class="subtitle is-6">${news.source}</p>
+        </div>
+    </div>
+    <div class="content">
+        <p>${news.summary}</p>
+        <time datetime="${new Date(news.datetime * 1000).toISOString()}">${new Date(news.datetime * 1000).toDateString()}</time>
+    </div>
+</div>
+</div>
+</div>`;
+        });
+    })();
+</script>
+
+</html>
