@@ -40,7 +40,7 @@
                                     {% endif %}
                                     <li class="is-active"><a>Home</a></li>
                                     {% if current_user.is_authenticated %}
-                                    <li><a href="">MyStock</a></li>
+                                    <li><a href="/mystock">MyStock</a></li>
                                     {% endif %}
                                 </ul>
                                 {% if not current_user.is_authenticated %}

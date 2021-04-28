@@ -112,8 +112,8 @@ class FaceDetection {
                         alert(data.message);
                         window.location = "/";
                     },
-                    error:function(data){
-                        alert(data.message)
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        alert(XMLHttpRequest.responseText)
                     },
                 })
                 return;
